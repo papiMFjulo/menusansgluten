@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Menus Sans Gluten</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .recipe-card {
+            transition: all 0.3s ease;
+            transform-origin: top center;
+        }
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .recipe-detail {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        .recipe-detail.active {
+            max-height: 1000px;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-green-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-green-800 dark:text-green-300 mb-2">Générateur de Menus Sans Gluten</h1>
+            <p class="text-lg text-green-600 dark:text-green-400">Découvrez de délicieuses recettes adaptées à votre régime sans gluten</p>
+        </header>
+        <main>
+            <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden p-6 mb-8">
+                <div class="text-center">
+                    <button id="generateBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105">
+                        <i class="fas fa-random mr-2"></i> Générer de nouvelles recettes
+                    </button>
+                    <p class="text-gray-500 dark:text-gray-300 mt-2">Cliquez pour obtenir 3 suggestions de repas</p>
+                </div>
+            </div>
+            <div id="mealsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Meals will be generated here -->
+            </div>
+            <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden p-6">
+                <h2 class="text-2xl font-bold text-green-800 dark:text-green-300 mb-4">Conseils pour un régime sans gluten</h2>
+                <ul class="space-y-3 text-gray-700 dark:text-gray-200">
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        <span>Vérifiez toujours les étiquettes des produits alimentaires</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        <span>Privilégiez les aliments naturellement sans gluten comme les fruits, légumes, viandes et poissons frais</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        <span>Utilisez des farines alternatives (riz, sarrasin, châtaigne, pois chiche)</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                        <span>Évitez la contamination croisée dans votre cuisine</span>
+                    </li>
+                </ul>
+            </div>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const generateBtn = document.getElementById('generateBtn');
+            const mealsContainer = document.getElementById('mealsContainer');
+
+            const recipes = [
+                {
+                    id: 1,
+                    title: 'Ratatouille provençale',
+                    time: '55 min',
+                    difficulty: 'Moyen',
+                    image: 'https://source.unsplash.com/400x320/?ratatouille,vegetable',
+                    ingredients: ['1 aubergine', '2 courgettes', '2 poivrons', '4 tomates', '1 oignon', '3 gousses d\'ail'],
+                    instructions: [
+                        'Lavez et coupez tous les légumes.',
+                        'Faites revenir l\'oignon dans l\'huile.',
+                        'Ajoutez les légumes et les herbes.',
+                        'Laissez mijoter 30 minutes.'
+                    ]
+                },
+                {
+                    id: 2,
+                    title: 'Saumon en papillote',
+                    time: '30 min',
+                    difficulty: 'Facile',
+                    image: 'https://source.unsplash.com/400x320/?salmon,fish,healthy',
+                    ingredients: ['4 pavés de saumon', '1 courgette', '1 carotte', '1 poireau', '1 citron'],
+                    instructions: [
+                        'Préchauffez le four à 200°C.',
+                        'Coupez les légumes en julienne.',
+                        'Faites les papillotes avec les ingrédients.',
+                        'Cuisez 15-20 minutes.'
+                    ]
+                },
+                {
+                    id: 3,
+                    title: 'Poulet au curry',
+                    time: '40 min',
+                    difficulty: 'Facile',
+                    image: 'https://source.unsplash.com/400x320/?chicken,curry',
+                    ingredients: ['4 blancs de poulet', '1 oignon', '2 gousses d\'ail', '200ml lait de coco', '1 c. à soupe de curry'],
+                    instructions: [
+                        'Faites revenir l\'oignon et l\'ail.',
+                        'Ajoutez le poulet en morceaux.',
+                        'Ajoutez le curry et le lait de coco.',
+                        'Laissez mijoter 25 minutes.'
+                    ]
+                }
+            ];
+
+            function generateMeals() {
+                mealsContainer.innerHTML = '';
+                const shuffled = [...recipes].sort(() => 0.5 - Math.random());
+                const selected = shuffled.slice(0, 3);
+
+                selected.forEach(recipe => {
+                    const card = document.createElement('div');
+                    card.className = 'recipe-card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden fade-in';
+                    card.innerHTML = `
+                        <div>
+                            <img class="w-full h-48 object-cover" src="${recipe.image}" alt="${recipe.title}">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-green-800 dark:text-green-300 mb-2">${recipe.title}</h3>
+                                <div class="flex justify-between text-sm text-gray-500 dark:text-gray-300 mb-4">
+                                    <span><i class="far fa-clock mr-1"></i> ${recipe.time}</span>
+                                    <span><i class="fas fa-signal mr-1"></i> ${recipe.difficulty}</span>
+                                </div>
+                                <button class="show-recipe-btn w-full bg-green-100 dark:bg-green-700 dark:text-white hover:bg-green-200 text-green-800 font-medium py-2 px-4 rounded-lg transition">Voir la recette</button>
+                            </div>
+                        </div>
+                        <div class="recipe-detail px-6 pb-6">
+                            <div class="border-t border-gray-200 dark:border-gray-600 pt-4 mt-4">
+                                <h4 class="font-bold text-green-700 dark:text-green-400 mb-2">Ingrédients :</h4>
+                                <ul class="list-disc list-inside text-gray-700 dark:text-gray-200 mb-4">
+                                    ${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                                </ul>
+                                <h4 class="font-bold text-green-700 dark:text-green-400 mb-2">Préparation :</h4>
+                                <ol class="list-decimal list-inside text-gray-700 dark:text-gray-200">
+                                    ${recipe.instructions.map(step => `<li>${step}</li>`).join('')}
+                                </ol>
+                            </div>
+                        </div>`;
+
+                    mealsContainer.appendChild(card);
+
+                    const showBtn = card.querySelector('.show-recipe-btn');
+                    const detail = card.querySelector('.recipe-detail');
+                    showBtn.addEventListener('click', () => {
+                        detail.classList.toggle('active');
+                        showBtn.textContent = detail.classList.contains('active') ? 'Masquer la recette' : 'Voir la recette';
+                    });
+                });
+            }
+
+            generateBtn.addEventListener('click', generateMeals);
+            generateMeals();
+        });
+    </script>
+</body>
+</html>
